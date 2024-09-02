@@ -29,7 +29,7 @@ namespace LenaInventoryManagementSystem.Domain
                     AddANewProduct();
                     break;
                 case "2":
-                    //ViewAllProducts();
+                    ViewAllProducts();
                     break;
                 case "3":
                    // UpdateAProduct();
@@ -92,5 +92,16 @@ namespace LenaInventoryManagementSystem.Domain
             }
             MainMenu();
         }
+        private static void ViewAllProducts()
+        {
+            //don't forget to add that if there is no products, tell the user that there is no products yet.
+            foreach (Product product in products)
+            {
+                Console.WriteLine(product.AllDetails());
+                Console.WriteLine();
+            }
+            MainMenu();
+        }
+
     }
 }

@@ -232,6 +232,29 @@ namespace LenaInventoryManagementSystem.Domain
             MainMenu();
 
         }
+        private static void ViewAProduct()
+        {
+            Console.WriteLine("How many products do you want to view its data?");
+            int noOfProducts = int.Parse(Console.ReadLine());
+            for (int i = 0; i < noOfProducts; i++)
+            {
+                Console.WriteLine($"Enter the {i + 1}. product name that you want to view it's details: ");
+                string name = Console.ReadLine() ?? string.Empty;
+
+                Product? existingProduct = products.FirstOrDefault(p => p.ProductName == name);
+
+                if (existingProduct != null)
+                {
+                    Console.WriteLine(existingProduct.AllDetails());
+                }
+                else
+                    Console.WriteLine($"Product: {name}, doesn't exist please try again.");
+
+            }
+
+            MainMenu();
+        }
+
 
 
     }

@@ -35,7 +35,7 @@ namespace LenaInventoryManagementSystem.Domain
                     UpdateAProduct();
                     break;
                 case "4":
-                    //DeleteAProduct();
+                    DeleteAProduct();
                     break;
                 case "5":
                     //ViewAProduct();
@@ -206,6 +206,31 @@ namespace LenaInventoryManagementSystem.Domain
                 Console.WriteLine("Product not found, please try again.");
 
             MainMenu();
+        }
+        private static void DeleteAProduct()
+        {
+            Console.WriteLine("How many products do you want to delete?");
+            int noOfProducts = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < noOfProducts; i++)
+            {
+
+                Console.WriteLine($"Enter the {i + 1}. product name you want to delete: ");
+                string name = Console.ReadLine() ?? string.Empty;
+
+                Product? existingProduct = products.FirstOrDefault(p => p.ProductName == name);
+
+                if (existingProduct != null)
+                {
+                    products.Remove(existingProduct);
+                    Console.WriteLine($"Product: {name}, was successfully deleted.");
+                }
+                else
+                    Console.WriteLine($"Product: {name}, doesn't exist please try again.");
+            }
+
+            MainMenu();
+
         }
 
 

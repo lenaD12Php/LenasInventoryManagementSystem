@@ -32,7 +32,7 @@ namespace LenaInventoryManagementSystem.Domain
                     ViewAllProducts();
                     break;
                 case "3":
-                   // UpdateAProduct();
+                    UpdateAProduct();
                     break;
                 case "4":
                     //DeleteAProduct();
@@ -102,6 +102,112 @@ namespace LenaInventoryManagementSystem.Domain
             }
             MainMenu();
         }
+        private static void UpdateAProduct()
+        {
+            Console.WriteLine("How many products do you want to update its data?");
+            int noOfProducts = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < noOfProducts; i++)
+            {
+
+                Console.WriteLine($"Enter the {i + 1}. product name that you want to update it's details: ");
+                string name = Console.ReadLine() ?? string.Empty;
+
+                Product? existingProduct = products.FirstOrDefault(p => p.ProductName == name);
+
+                if (existingProduct != null)
+                {
+
+                    Console.WriteLine(" -------------------------------- ");
+                    Console.WriteLine("| What do you want to update?    |");
+                    Console.WriteLine(" -------------------------------- ");
+                    Console.WriteLine("| 1: Update the product name     |");
+                    Console.WriteLine("| 2: Update the product price    |");
+                    Console.WriteLine("| 3: Update the product quantity |");
+                    Console.WriteLine("| 4: Exit to the main menu       |");
+                    Console.WriteLine(" -------------------------------- ");
+
+                    Console.WriteLine("");
+                    string? userSelection = Console.ReadLine();
+
+                    switch (userSelection)
+                    {
+                        case "1":
+                            UpdateProductName();
+                            break;
+                        case "2":
+                            UpdateProductPrice();
+                            break;
+                        case "3":
+                            UpdateProductQuantity();
+                            break;
+                        case "4":
+                            MainMenu();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid selection, please try again.");
+                            break;
+                    }
+                }
+                else
+                    Console.WriteLine("Product not found. Try again.");
+            }
+            MainMenu();
+        }
+        private static void UpdateProductName()
+        {
+            Console.WriteLine("Please enter the product name that you want to change: ");
+            string? oldName = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine("Please enter the new name: ");
+            string? newName = Console.ReadLine() ?? string.Empty;
+
+            Product? existingProduct = products.FirstOrDefault(p => p.ProductName == oldName);
+
+            if (existingProduct != null)
+                existingProduct.ProductName = newName;
+            else
+                Console.WriteLine("Product not found, please try again.");
+
+            MainMenu();
+
+        }
+        private static void UpdateProductPrice()
+        {
+            Console.WriteLine("Please enter the product name that you want to change its price: ");
+            string? name = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine($"Enter the new price of the ({name}) product: ");
+            double newPrice = double.Parse(Console.ReadLine() ?? "0.0");
+
+            Product? existingProduct = products.FirstOrDefault(p => p.ProductName == name);
+
+            if (existingProduct != null)
+                existingProduct.Price = newPrice;
+            else
+                Console.WriteLine("Product not found, please try again.");
+
+            MainMenu();
+
+        }
+        private static void UpdateProductQuantity()
+        {
+            Console.WriteLine("Please enter the product name that you want to change its quantity: ");
+            string? name = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine($"Enter the new quantity of the ({name}) product: ");
+            int quantity = int.Parse(Console.ReadLine() ?? "0");
+
+            Product? existingProduct = products.FirstOrDefault(p => p.ProductName == name);
+
+            if (existingProduct != null)
+                existingProduct.Quantity = quantity;
+            else
+                Console.WriteLine("Product not found, please try again.");
+
+            MainMenu();
+        }
+
 
     }
 }

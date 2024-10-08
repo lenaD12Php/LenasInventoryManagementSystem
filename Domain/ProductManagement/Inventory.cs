@@ -6,6 +6,8 @@ namespace LenaInventoryManagementSystem.Domain
     {
         private static List<Product> _products = new();
         private static InventoryUI _inventoryUI=new();
+        private const int _maxItemsInStock = 150;
+
         internal static void MainMenu()
         {
             _inventoryUI.DisplayMainMenu();
@@ -33,6 +35,7 @@ namespace LenaInventoryManagementSystem.Domain
                     break;
             }
         }
+
         private static void AddANewProduct()
         {
             Product? product = null;
@@ -59,13 +62,13 @@ namespace LenaInventoryManagementSystem.Domain
                 else
                 {
                     //Creatng a new product if the product doesn't exists.
-                    if (quantity <= 150 && quantity > 0)
+                    if (quantity <= _maxItemsInStock && quantity > 0)
                     {
                         product = new Product(name, price, quantity);
                         _products.Add(product);
                         _inventoryUI.PrintMessage("Product added successfully.");
                     }
-                    else if (quantity > 150)
+                    else if (quantity > _maxItemsInStock)
                         _inventoryUI.PrintMessage("You can't have more than 150.");
                     else
                         _inventoryUI.PrintMessage("You added zero items.");
@@ -73,6 +76,7 @@ namespace LenaInventoryManagementSystem.Domain
             }
             MainMenu();
         }
+
         private static void ViewAllProducts()
         {
             if (_products.Count == 0)
@@ -87,6 +91,7 @@ namespace LenaInventoryManagementSystem.Domain
             }
             MainMenu();
         }
+
         private static void UpdateAProduct()
         {
             var noOfProducts = int.Parse(_inventoryUI.Input("How many products do you want to update its data?"));
@@ -126,6 +131,7 @@ namespace LenaInventoryManagementSystem.Domain
             }
             MainMenu();
         }
+
         private static void UpdateProductName()
         {
             var oldName = _inventoryUI.Input("Please enter the product name that you want to change: ");
@@ -141,6 +147,7 @@ namespace LenaInventoryManagementSystem.Domain
 
             MainMenu();
         }
+
         private static void UpdateProductPrice()
         {
             var name = _inventoryUI.Input("Please enter the product name that you want to change its price: ");
@@ -156,6 +163,7 @@ namespace LenaInventoryManagementSystem.Domain
 
             MainMenu();
         }
+
         private static void UpdateProductQuantity()
         {
             var name = _inventoryUI.Input("Please enter the product name that you want to change its quantity: ");
@@ -171,6 +179,7 @@ namespace LenaInventoryManagementSystem.Domain
 
             MainMenu();
         }
+
         private static void DeleteAProduct()
         {
             var noOfProducts = int.Parse(_inventoryUI.Input("How many products do you want to delete?"));
@@ -191,6 +200,7 @@ namespace LenaInventoryManagementSystem.Domain
             }
             MainMenu();
         }
+
         private static void ViewAProduct()
         {
             var noOfProducts = int.Parse(_inventoryUI.Input("How many products do you want to view its data?"));

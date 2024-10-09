@@ -20,7 +20,7 @@ public class Inventory
                 _inventoryUI.DisplayAllProducts();
                 break;
             case "3":
-                UpdateAProduct();
+                _inventoryUI.UpdateProductUI();
                 break;
             case "4":
                 DeleteAProduct();
@@ -53,80 +53,50 @@ public class Inventory
         return _products;
     }
 
-    private static void UpdateAProduct()
+    internal static void UpdateProduct(string name, int choice)
     {
-        var noOfProducts = int.Parse(_inventoryUI.Input("How many products do you want to update its data?"));
+        Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 
-        for (int i = 0; i < noOfProducts; i++)
+        if (existingProduct != null)
         {
-            var name = _inventoryUI.Input($"Enter the {i + 1}. product name that you want to update it's details: ");
-
-            Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
-
-            if (existingProduct != null)
+            switch (choice)
             {
-                _inventoryUI.DisplayProductUpdateMenu();
-                var userSelection = _inventoryUI.UserSelection();
-
-                switch (userSelection)
-                {
-                    case "1":
-                        _inventoryUI.UpdateProductNameUI();
-                        break;
-                    case "2":
-                        _inventoryUI.UpdateProductPriceUI();
-                        break;
-                    case "3":
-                        _inventoryUI.UpdateProductQuantityUI();
-                        break;
-                    case "4":
-                        MainMenu();
-                        break;
-                    default:
-                        _inventoryUI.PrintMessage("Invalid selection, please try again.");
-                        break;
-                }
+                case 1:
+                    var newName = _inventoryUI.Input("Enter new name: ");
+                    UpdateProductName(existingProduct, newName);
+                    break;
+                case 2:
+                    var newPrice = double.Parse(_inventoryUI.Input("Enter new price: "));
+                    UpdateProductPrice(existingProduct, newPrice);
+                    break;
+                case 3:
+                    var newQuantity = int.Parse(_inventoryUI.Input("Enter new quantity: "));
+                    UpdateProductQuantity(existingProduct, newQuantity);
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid selection");
             }
-            else
-                _inventoryUI.PrintMessage("Product not found. Try again.");
+        }
+        else
+        {
+            throw new Exception("Product not found");
         }
         MainMenu();
     }
 
-    internal static void UpdateProductName(string oldName, string newName)
+    internal static void UpdateProductName(Product product, string newName)
     {
-        Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == oldName);
-
-        if (existingProduct != null)
-            existingProduct.ProductName = newName;
-        else
-           throw new Exception("Product not found.");
-
-        MainMenu();
+        product.ProductName = newName;  
     }
 
-    internal static void UpdateProductPrice(string name, double newPrice)
+    internal static void UpdateProductPrice(Product product, double newPrice)
     {
-        Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
-
-        if (existingProduct != null)
-            existingProduct.Price = newPrice;
-        else
-            throw new Exception("Product not found");
-
-        MainMenu();
+        product.Price = newPrice;  
     }
 
-    internal static void UpdateProductQuantity(string name, int quantity)
+    internal static void UpdateProductQuantity(Product product, int newQuantity)
     {
-        Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
-
-        if (existingProduct != null)
-            existingProduct.Quantity = quantity;
-        else
-            throw new Exception("Product not found.");  
-
-        MainMenu();
+        product.Quantity = newQuantity;  
     }
 
     private static void DeleteAProduct()
@@ -166,4 +136,9 @@ public class Inventory
         }
         MainMenu();
     }
+    internal static Product? GetProductByName(string name)
+    {
+        return _products.FirstOrDefault(p => p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
+    }
+
 }

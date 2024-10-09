@@ -26,14 +26,6 @@ public class InventoryUI
          Inventory.MainMenu();
     }
 
-    /*public void DisplayUpdatedProductQuantity()
-    {
-        var name = Input("Please enter the product name that you want to change its quantity: ");
-
-        var quantity = int.Parse(Input($"Enter the new quantity of the ({name}) product: "));
-
-    }*/
-
     public void AddingANewProductUI()
     {
         var noOfProducts = int.Parse(Input("How many Products do you want to add? "));
@@ -48,54 +40,74 @@ public class InventoryUI
         }
     }
 
-    public void UpdateProductNameUI()
+    public void UpdateProductUI()
     {
-        var oldName = Input("Please enter the product name that you want to change: ");
-        var newName = Input("Please enter the new name: ");
+        var productName = Input("Enter the product name: ");
+        DisplayProductUpdateMenu();
+        int choice = int.Parse(UserSelection());
 
         try
         {
-            Inventory.UpdateProductName(oldName, newName);
-            PrintMessage("Product name updated successfully.");
+            Inventory.UpdateProduct(productName, choice);  
+            PrintMessage("Product updated successfully.");
         }
         catch (Exception ex)
         {
-            PrintMessage(ex.Message);
+            PrintMessage(ex.Message); 
         }
     }
 
-    public void UpdateProductQuantityUI()
+    public void UpdateProductNameUI()
     {
-        var name = Input("Please enter the product name that you want to change its quantity: ");
-        var quantity = int.Parse(Input($"Enter the new quantity of the ({name}) product: "));
+        var name = Input("Enter the product name you want to change: ");
+        var newName = Input("Enter the new name: ");
 
-        try
+        var product = Inventory.GetProductByName(name);  
+        if (product != null)
         {
-            Inventory.UpdateProductQuantity(name, quantity); 
-            PrintMessage("Product quantity updated successfully.");
+            Inventory.UpdateProductName(product, newName);  
+            PrintMessage("Product name updated successfully.");
         }
-        catch (Exception ex)
+        else
         {
-            PrintMessage(ex.Message);
+            PrintMessage("Product not found.");
         }
     }
 
     public void UpdateProductPriceUI()
     {
-        var name = Input("Please enter the product name that you want to change its price: ");
-        var newPrice = double.Parse(Input($"Enter the new price of the ({name}) product: "));
+        var name = Input("Enter the product name you want to change its price: ");
+        var newPrice = double.Parse(Input("Enter the new price: "));
 
-        try
+        var product = Inventory.GetProductByName(name);
+        if (product != null)
         {
-            Inventory.UpdateProductPrice(name, newPrice);
+            Inventory.UpdateProductPrice(product, newPrice);
             PrintMessage("Product price updated successfully.");
         }
-        catch (Exception ex)
+        else
         {
-            PrintMessage(ex.Message);
+            PrintMessage("Product not found.");
         }
     }
-  
+
+    public void UpdateProductQuantityUI()
+    {
+        var name = Input("Enter the product name you want to change its quantity: ");
+        var newQuantity = int.Parse(Input("Enter the new quantity: "));
+
+        var product = Inventory.GetProductByName(name);
+        if (product != null)
+        {
+            Inventory.UpdateProductQuantity(product, newQuantity);
+            PrintMessage("Product quantity updated successfully.");
+        }
+        else
+        {
+            PrintMessage("Product not found.");
+        }
+    }
+
     public void DisplayProductUpdateMenu()
     {
         Console.WriteLine(" -------------------------------- ");

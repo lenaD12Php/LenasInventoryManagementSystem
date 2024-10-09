@@ -14,7 +14,7 @@ public class Inventory
         switch (userSelection)
         {
              case "1":
-                _inventoryUI.DisplayAddingANewProduct();
+                _inventoryUI.AddingANewProductUI();
                 break;
             case "2":
                 _inventoryUI.DisplayAllProducts();
@@ -51,7 +51,6 @@ public class Inventory
     internal static List<Product> ViewAllProducts()
     {
         return _products;
-        MainMenu();
     }
 
     private static void UpdateAProduct()
@@ -72,13 +71,13 @@ public class Inventory
                 switch (userSelection)
                 {
                     case "1":
-                        UpdateProductName();
+                        _inventoryUI.UpdateProductNameUI();
                         break;
                     case "2":
-                        UpdateProductPrice();
+                        _inventoryUI.UpdateProductPriceUI();
                         break;
                     case "3":
-                        UpdateProductQuantity();
+                        _inventoryUI.UpdateProductQuantityUI();
                         break;
                     case "4":
                         MainMenu();
@@ -94,51 +93,38 @@ public class Inventory
         MainMenu();
     }
 
-    private static void UpdateProductName()
+    internal static void UpdateProductName(string oldName, string newName)
     {
-        var oldName = _inventoryUI.Input("Please enter the product name that you want to change: ");
-
-        var newName = _inventoryUI.Input("Please enter the new name: ");
-
         Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == oldName);
 
         if (existingProduct != null)
             existingProduct.ProductName = newName;
         else
-            _inventoryUI.PrintMessage("Product not found, please try again.");
+           throw new Exception("Product not found.");
 
         MainMenu();
     }
 
-    private static void UpdateProductPrice()
+    internal static void UpdateProductPrice(string name, double newPrice)
     {
-        var name = _inventoryUI.Input("Please enter the product name that you want to change its price: ");
-        
-       var newPrice = double.Parse(_inventoryUI.Input($"Enter the new price of the ({name}) product: "));
-
         Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 
         if (existingProduct != null)
             existingProduct.Price = newPrice;
         else
-            _inventoryUI.PrintMessage("Product not found, please try again.");
+            throw new Exception("Product not found");
 
         MainMenu();
     }
 
-    private static /*int*/void  UpdateProductQuantity(/*string name, int quantity*/)
+    internal static void UpdateProductQuantity(string name, int quantity)
     {
-        //If I add Two parameters one for the name and one for the quantity and handle the logic here.
-       var name = _inventoryUI.Input("Please enter the product name that you want to change its quantity: ");
-
-        var quantity = int.Parse(_inventoryUI.Input($"Enter the new quantity of the ({name}) product: "));
-
         Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 
         if (existingProduct != null)
             existingProduct.Quantity = quantity;
         else
-            _inventoryUI.PrintMessage("Product not found, please try again.");
+            throw new Exception("Product not found.");  
 
         MainMenu();
     }

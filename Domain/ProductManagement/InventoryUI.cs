@@ -23,6 +23,7 @@ public class InventoryUI
          {
              Console.WriteLine(product.AllDetails()); 
          }
+         Inventory.MainMenu();
     }
 
     /*public void DisplayUpdatedProductQuantity()
@@ -33,7 +34,7 @@ public class InventoryUI
 
     }*/
 
-    public void DisplayAddingANewProduct()
+    public void AddingANewProductUI()
     {
         var noOfProducts = int.Parse(Input("How many Products do you want to add? "));
 
@@ -43,10 +44,58 @@ public class InventoryUI
             var price = double.Parse(Input("Enter the price of the product: "));
             var quantity = int.Parse(Input("Enter the quantity you want to add: "));
 
-            Inventory.AddANewProduct(name, price, quantity); // Business logic method call
+            Inventory.AddANewProduct(name, price, quantity);
         }
-
     }
+
+    public void UpdateProductNameUI()
+    {
+        var oldName = Input("Please enter the product name that you want to change: ");
+        var newName = Input("Please enter the new name: ");
+
+        try
+        {
+            Inventory.UpdateProductName(oldName, newName);
+            PrintMessage("Product name updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            PrintMessage(ex.Message);
+        }
+    }
+
+    public void UpdateProductQuantityUI()
+    {
+        var name = Input("Please enter the product name that you want to change its quantity: ");
+        var quantity = int.Parse(Input($"Enter the new quantity of the ({name}) product: "));
+
+        try
+        {
+            Inventory.UpdateProductQuantity(name, quantity); 
+            PrintMessage("Product quantity updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            PrintMessage(ex.Message);
+        }
+    }
+
+    public void UpdateProductPriceUI()
+    {
+        var name = Input("Please enter the product name that you want to change its price: ");
+        var newPrice = double.Parse(Input($"Enter the new price of the ({name}) product: "));
+
+        try
+        {
+            Inventory.UpdateProductPrice(name, newPrice);
+            PrintMessage("Product price updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            PrintMessage(ex.Message);
+        }
+    }
+  
     public void DisplayProductUpdateMenu()
     {
         Console.WriteLine(" -------------------------------- ");

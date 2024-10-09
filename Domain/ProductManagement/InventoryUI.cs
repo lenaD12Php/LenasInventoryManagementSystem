@@ -20,9 +20,8 @@ public class InventoryUI
     {
          var products = Inventory.ViewAllProducts(); 
          foreach (Product product in products)
-         {
              Console.WriteLine(product.AllDetails()); 
-         }
+
          Inventory.MainMenu();
     }
 
@@ -38,6 +37,30 @@ public class InventoryUI
 
             Inventory.AddANewProduct(name, price, quantity);
         }
+
+        Inventory.MainMenu();
+    }
+
+    public void DeletingAProductUI()
+    {
+        var noOfProducts = int.Parse(Input("How many products do you want to delete?"));
+
+        for (int i = 0; i < noOfProducts; i++)
+        {
+            var name = Input($"Enter the {i + 1}. product name you want to delete: ");
+
+            try
+            {
+                Inventory.DeleteAProduct(name);
+                PrintMessage($"Product: {name}, was successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                PrintMessage(ex.Message);
+            }
+        }
+
+        Inventory.MainMenu();
     }
 
     public void UpdateProductUI()
@@ -48,13 +71,15 @@ public class InventoryUI
 
         try
         {
-            Inventory.UpdateProduct(productName, choice);  
+            Inventory.UpdateProduct(productName, choice);
             PrintMessage("Product updated successfully.");
         }
         catch (Exception ex)
         {
-            PrintMessage(ex.Message); 
+            PrintMessage(ex.Message);
         }
+        
+        Inventory.MainMenu();
     }
 
     public void UpdateProductNameUI()
@@ -69,9 +94,9 @@ public class InventoryUI
             PrintMessage("Product name updated successfully.");
         }
         else
-        {
             PrintMessage("Product not found.");
-        }
+        
+        Inventory.MainMenu();
     }
 
     public void UpdateProductPriceUI()
@@ -86,9 +111,9 @@ public class InventoryUI
             PrintMessage("Product price updated successfully.");
         }
         else
-        {
             PrintMessage("Product not found.");
-        }
+
+        Inventory.MainMenu();
     }
 
     public void UpdateProductQuantityUI()
@@ -103,9 +128,9 @@ public class InventoryUI
             PrintMessage("Product quantity updated successfully.");
         }
         else
-        {
             PrintMessage("Product not found.");
-        }
+
+        Inventory.MainMenu();
     }
 
     public void DisplayProductUpdateMenu()
@@ -118,6 +143,23 @@ public class InventoryUI
         Console.WriteLine("| 3: Update the product quantity |");
         Console.WriteLine("| 4: Exit to the main menu       |");
         Console.WriteLine(" -------------------------------- ");
+    }
+
+    public void ViewAProductUI()
+    {
+        var noOfProducts = int.Parse(Input("How many products do you want to view their details?"));
+        for (int i = 0; i < noOfProducts; i++)
+        {
+            var name = Input($"Enter the name of product {i + 1} to view its details: ");
+            var product = Inventory.GetProductByName(name);
+
+            if (product != null)
+                PrintMessage(Inventory.ViewAProduct(product));
+            else
+                PrintMessage($"Product: {name}, doesn't exist. Please try again.");
+        }
+
+        Inventory.MainMenu();
     }
 
     public string UserSelection()

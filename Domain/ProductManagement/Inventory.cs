@@ -23,10 +23,10 @@ public class Inventory
                 _inventoryUI.UpdateProductUI();
                 break;
             case "4":
-                DeleteAProduct();
+                _inventoryUI.DeletingAProductUI();
                 break;
             case "5":
-                ViewAProduct();
+                _inventoryUI.ViewAProductUI();
                 break;
             default:
                 _inventoryUI.PrintMessage("Invalid selection. Please try again.");
@@ -45,7 +45,6 @@ public class Inventory
             var product = new Product(name, price, quantity);
             _products.Add(product);
         }
-        MainMenu();
     }
 
     internal static List<Product> ViewAllProducts()
@@ -78,10 +77,7 @@ public class Inventory
             }
         }
         else
-        {
             throw new Exception("Product not found");
-        }
-        MainMenu();
     }
 
     internal static void UpdateProductName(Product product, string newName)
@@ -99,46 +95,23 @@ public class Inventory
         product.Quantity = newQuantity;  
     }
 
-    private static void DeleteAProduct()
+    internal static void DeleteAProduct(string name)
     {
-        var noOfProducts = int.Parse(_inventoryUI.Input("How many products do you want to delete?"));
+        Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 
-        for (int i = 0; i < noOfProducts; i++)
-        {
-            var name =_inventoryUI.Input($"Enter the {i + 1}. product name you want to delete: ");
-
-            Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
-
-            if (existingProduct != null)
-            {
-                _products.Remove(existingProduct);
-                _inventoryUI.PrintMessage($"Product: {name}, was successfully deleted.");
-            }
-            else
-                _inventoryUI.PrintMessage($"Product: {name}, doesn't exist please try again.");
-        }
-        MainMenu();
+        if (existingProduct != null)
+            _products.Remove(existingProduct);
+        else
+            throw new Exception($"Product: {name}, doesn't exist please try again.");
     }
 
-    private static void ViewAProduct()
+    internal static string ViewAProduct(Product product)
     {
-        var noOfProducts = int.Parse(_inventoryUI.Input("How many products do you want to view its data?"));
-        for (int i = 0; i < noOfProducts; i++)
-        {
-            var name = _inventoryUI.Input($"Enter the {i + 1}. product name that you want to view it's details: ");
-
-            Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
-
-            if (existingProduct != null)
-                _inventoryUI.PrintMessage(existingProduct.AllDetails());
-            else
-                _inventoryUI.PrintMessage($"Product: {name}, doesn't exist please try again.");
-        }
-        MainMenu();
+            return product.AllDetails(); 
     }
+
     internal static Product? GetProductByName(string name)
     {
         return _products.FirstOrDefault(p => p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
     }
-
 }

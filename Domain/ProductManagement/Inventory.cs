@@ -3,38 +3,37 @@
 public class Inventory
 {
     private static List<Product> _products = new();
-    private static InventoryUI _inventoryUI=new();
     private const int _maxItemsInStock = 150;
 
     internal static void MainMenu()
     {
-        _inventoryUI.DisplayMainMenu();
-        var userSelection=_inventoryUI.UserSelection();
+        InventoryUI.DisplayMainMenu();
+        var userSelection=InventoryUI.UserSelection();
 
         switch (userSelection)
         {
              case "1":
-                _inventoryUI.AddingANewProductUI();
+                InventoryUI.AddingANewProductUI();
                 break;
             case "2":
-                _inventoryUI.DisplayAllProducts();
+                InventoryUI.DisplayAllProducts();
                 break;
             case "3":
-                _inventoryUI.UpdateProductUI();
+                InventoryUI.UpdateProductUI();
                 break;
             case "4":
-                _inventoryUI.DeletingAProductUI();
+                InventoryUI.DeletingAProductUI();
                 break;
             case "5":
-                _inventoryUI.ViewAProductUI();
+                InventoryUI.ViewAProductUI();
                 break;
             default:
-                _inventoryUI.PrintMessage("Invalid selection. Please try again.");
+                InventoryUI.PrintMessage("Invalid selection. Please try again.");
                 break;
         }
     }
 
-    internal static void AddANewProduct(string name, double price, int quantity)
+    internal static void AddProduct(string name, double price, int quantity)
     {
         //Checking if the product exists.
         bool existingProduct = _products.Any(p => p.ProductName == name);
@@ -47,7 +46,7 @@ public class Inventory
         }
     }
 
-    internal static List<Product> ViewAllProducts()
+    internal static List<Product> GetAllProducts()
     {
         return _products;
     }
@@ -56,28 +55,25 @@ public class Inventory
     {
         Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 
-        if (existingProduct != null)
-        {
-            switch (choice)
-            {
-                case 1:
-                    var newName = _inventoryUI.Input("Enter new name: ");
-                    UpdateProductName(existingProduct, newName);
-                    break;
-                case 2:
-                    var newPrice = double.Parse(_inventoryUI.Input("Enter new price: "));
-                    UpdateProductPrice(existingProduct, newPrice);
-                    break;
-                case 3:
-                    var newQuantity = int.Parse(_inventoryUI.Input("Enter new quantity: "));
-                    UpdateProductQuantity(existingProduct, newQuantity);
-                    break;
-                default:
-                    throw new InvalidOperationException("Invalid selection");
-            }
-        }
-        else
+        if (existingProduct == null)
             throw new Exception("Product not found");
+        switch (choice)
+        {
+            case 1:
+                var newName = InventoryUI.Message("Enter new name: ");
+                UpdateProductName(existingProduct, newName);
+                break;
+            case 2:
+                var newPrice = double.Parse(InventoryUI.Message("Enter new price: "));
+                UpdateProductPrice(existingProduct, newPrice);
+                break;
+            case 3:
+                var newQuantity = int.Parse(InventoryUI.Message("Enter new quantity: "));
+                UpdateProductQuantity(existingProduct, newQuantity);
+                break;
+            default:
+                throw new InvalidOperationException("Invalid selection");
+        }
     }
 
     internal static void UpdateProductName(Product product, string newName)
@@ -95,7 +91,7 @@ public class Inventory
         product.Quantity = newQuantity;  
     }
 
-    internal static void DeleteAProduct(string name)
+    internal static void DeleteProduct(string name)
     {
         Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 

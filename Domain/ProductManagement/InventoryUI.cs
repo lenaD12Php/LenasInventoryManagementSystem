@@ -2,7 +2,7 @@
 
 public class InventoryUI 
 {
-    public void DisplayMainMenu()
+    public static void DisplayMainMenu()
     {
         Console.WriteLine(" -------------------------- ");
         Console.WriteLine("| Select the action wanted |");
@@ -16,42 +16,42 @@ public class InventoryUI
         Console.WriteLine(" -------------------------- ");
     }
 
-    public void DisplayAllProducts()
+    public static void DisplayAllProducts()
     {
-         var products = Inventory.ViewAllProducts(); 
+         var products = Inventory.GetAllProducts(); 
          foreach (Product product in products)
              Console.WriteLine(product.AllDetails()); 
 
          Inventory.MainMenu();
     }
 
-    public void AddingANewProductUI()
+    public static void AddingANewProductUI()
     {
-        var noOfProducts = int.Parse(Input("How many Products do you want to add? "));
+        var noOfProducts = int.Parse(Message("How many Products do you want to add? "));
 
         for (int i = 0; i < noOfProducts; i++)
         {
-            var name = Input($"Enter the name of the {i + 1}. product you want to add: ");
-            var price = double.Parse(Input("Enter the price of the product: "));
-            var quantity = int.Parse(Input("Enter the quantity you want to add: "));
+            var name = Message($"Enter the name of the {i + 1}. product you want to add: ");
+            var price = double.Parse(Message("Enter the price of the product: "));
+            var quantity = int.Parse(Message("Enter the quantity you want to add: "));
 
-            Inventory.AddANewProduct(name, price, quantity);
+            Inventory.AddProduct(name, price, quantity);
         }
 
         Inventory.MainMenu();
     }
 
-    public void DeletingAProductUI()
+    public static void DeletingAProductUI()
     {
-        var noOfProducts = int.Parse(Input("How many products do you want to delete?"));
+        var noOfProducts = int.Parse(Message("How many products do you want to delete?"));
 
         for (int i = 0; i < noOfProducts; i++)
         {
-            var name = Input($"Enter the {i + 1}. product name you want to delete: ");
+            var name = Message($"Enter the {i + 1}. product name you want to delete: ");
 
             try
             {
-                Inventory.DeleteAProduct(name);
+                Inventory.DeleteProduct(name);
                 PrintMessage($"Product: {name}, was successfully deleted.");
             }
             catch (Exception ex)
@@ -63,9 +63,9 @@ public class InventoryUI
         Inventory.MainMenu();
     }
 
-    public void UpdateProductUI()
+    public static void UpdateProductUI()
     {
-        var productName = Input("Enter the product name: ");
+        var productName = Message("Enter the product name: ");
         DisplayProductUpdateMenu();
         int choice = int.Parse(UserSelection());
 
@@ -82,10 +82,10 @@ public class InventoryUI
         Inventory.MainMenu();
     }
 
-    public void UpdateProductNameUI()
+    public static void UpdateProductNameUI()
     {
-        var name = Input("Enter the product name you want to change: ");
-        var newName = Input("Enter the new name: ");
+        var name = Message("Enter the product name you want to change: ");
+        var newName = Message("Enter the new name: ");
 
         var product = Inventory.GetProductByName(name);  
         if (product != null)
@@ -99,10 +99,10 @@ public class InventoryUI
         Inventory.MainMenu();
     }
 
-    public void UpdateProductPriceUI()
+    public static void UpdateProductPriceUI()
     {
-        var name = Input("Enter the product name you want to change its price: ");
-        var newPrice = double.Parse(Input("Enter the new price: "));
+        var name = Message("Enter the product name you want to change its price: ");
+        var newPrice = double.Parse(Message("Enter the new price: "));
 
         var product = Inventory.GetProductByName(name);
         if (product != null)
@@ -116,10 +116,10 @@ public class InventoryUI
         Inventory.MainMenu();
     }
 
-    public void UpdateProductQuantityUI()
+    public static void UpdateProductQuantityUI()
     {
-        var name = Input("Enter the product name you want to change its quantity: ");
-        var newQuantity = int.Parse(Input("Enter the new quantity: "));
+        var name = Message("Enter the product name you want to change its quantity: ");
+        var newQuantity = int.Parse(Message("Enter the new quantity: "));
 
         var product = Inventory.GetProductByName(name);
         if (product != null)
@@ -133,7 +133,7 @@ public class InventoryUI
         Inventory.MainMenu();
     }
 
-    public void DisplayProductUpdateMenu()
+    public static void DisplayProductUpdateMenu()
     {
         Console.WriteLine(" -------------------------------- ");
         Console.WriteLine("| What do you want to update?    |");
@@ -145,12 +145,12 @@ public class InventoryUI
         Console.WriteLine(" -------------------------------- ");
     }
 
-    public void ViewAProductUI()
+    public static void ViewAProductUI()
     {
-        var noOfProducts = int.Parse(Input("How many products do you want to view their details?"));
+        var noOfProducts = int.Parse(Message("How many products do you want to view their details?"));
         for (int i = 0; i < noOfProducts; i++)
         {
-            var name = Input($"Enter the name of product {i + 1} to view its details: ");
+            var name = Message($"Enter the name of product {i + 1} to view its details: ");
             var product = Inventory.GetProductByName(name);
 
             if (product != null)
@@ -162,18 +162,18 @@ public class InventoryUI
         Inventory.MainMenu();
     }
 
-    public string UserSelection()
+    public static string UserSelection()
     {
         Console.WriteLine("Selected: ");
         return Console.ReadLine();
     }
 
-    public void PrintMessage(string message)
+    public static void PrintMessage(string message)
     {
         Console.WriteLine(message);
     }
 
-    public string Input(string input)
+    public static string Message(string input)
     {
         Console.WriteLine(input);
         return Console.ReadLine();

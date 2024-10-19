@@ -37,7 +37,7 @@ public class Inventory
     internal static void AddANewProduct(string name, double price, int quantity)
     {
         //Checking if the product exists.
-        Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
+        bool existingProduct = _products.Any(p => p.ProductName == name);
 
         //Creatng a new product if the product doesn't exists.
         if (quantity <= _maxItemsInStock && quantity > 0)

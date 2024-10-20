@@ -22,7 +22,7 @@ public class InventoryUI
     {
          var products = Inventory.GetAllProducts(); 
          foreach (Product product in products)
-             Console.WriteLine(product.AllDetails()); 
+             Console.WriteLine(product.GetAllDetails()); 
 
          Inventory.MainMenu();
     }
@@ -148,7 +148,7 @@ public class InventoryUI
         Console.WriteLine(" -------------------------------- ");
     }
 
-    public static void ViewAProductUI()
+    public static void ViewProductUI()
     {
         var noOfProducts = int.Parse(Message("How many products do you want to view their details?"));
         for (int i = 0; i < noOfProducts; i++)
@@ -157,7 +157,7 @@ public class InventoryUI
             var product = Inventory.GetProductByName(name);
 
             if (product != null)
-                PrintMessage(Inventory.ViewAProduct(product));
+                PrintMessage(Inventory.GetProductDetails(product));
             else
                 PrintMessage($"Product: {name}, doesn't exist. Please try again.");
         }

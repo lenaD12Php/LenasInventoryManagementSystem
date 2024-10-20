@@ -5,7 +5,6 @@ namespace LenaInventoryManagementSystem;
 public class Inventory
 {
     private static List<Product> _products = new();
-    private const int _maxItemsInStock = 150;
 
     internal static void MainMenu()
     {
@@ -27,7 +26,7 @@ public class Inventory
                 InventoryUI.DeletingAProductUI();
                 break;
             case "5":
-                InventoryUI.ViewAProductUI();
+                InventoryUI.ViewProductUI();
                 break;
             default:
                 InventoryUI.PrintMessage("Invalid selection. Please try again.");
@@ -41,7 +40,7 @@ public class Inventory
         bool existingProduct = _products.Any(p => p.ProductName == name);
 
         //Creatng a new product if the product doesn't exists.
-        if (quantity <= _maxItemsInStock && quantity > 0)
+        if (quantity <= Product.MaxItemsInStock && quantity > 0)
         {
             var product = new Product(name, price, quantity);
             _products.Add(product);
@@ -63,15 +62,22 @@ public class Inventory
         {
             case ProductUpdateMenu.UpdateProductName:
                 var newName = InventoryUI.Message("Enter new name: ");
-                UpdateProductName(existingProduct, newName);
+                if (_products.Any(p => p.ProductName != newName))
+                    UpdateProductName(existingProduct, newName);
+                else
+                    throw new Exception("The new name is taken.");
                 break;
             case ProductUpdateMenu.UpdateProductPrice:
-                var newPrice = double.Parse(InventoryUI.Message("Enter new price: "));
-                UpdateProductPrice(existingProduct, newPrice);
+                if (double.TryParse(InventoryUI.Message("Enter new price: "), out var newPrice))
+                    UpdateProductPrice(existingProduct, newPrice);
+                else
+                    throw new Exception("Invalid price format.");
                 break;
             case ProductUpdateMenu.UpdateProductQuantity:
-                var newQuantity = int.Parse(InventoryUI.Message("Enter new quantity: "));
-                UpdateProductQuantity(existingProduct, newQuantity);
+                if(int.TryParse(InventoryUI.Message("Enter new quantity: "), out var newQuantity))
+                    UpdateProductQuantity(existingProduct, newQuantity);
+                else
+                    throw new Exception("Invalid quantity format.");
                 break;
             default:
                 throw new InvalidOperationException("Invalid selection");
@@ -103,9 +109,9 @@ public class Inventory
             throw new Exception($"Product: {name}, doesn't exist please try again.");
     }
 
-    internal static string ViewAProduct(Product product)
+    internal static string GetProductDetails(Product product)
     {
-            return product.AllDetails(); 
+            return product.GetAllDetails(); 
     }
 
     internal static Product? GetProductByName(string name)

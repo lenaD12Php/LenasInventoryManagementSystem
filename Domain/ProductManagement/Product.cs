@@ -5,7 +5,7 @@ public class Product
     private string _productName;
     private double _price;
     private int _quantity;
-    private const int _maxItemsInStock = 150;
+    public const int MaxItemsInStock = 150;
 
     public Product()
     {
@@ -52,11 +52,11 @@ public class Product
     {
         var newStock = _quantity + amount;
         // Checking if there is enough storage for the whole amount to be added.
-        if (newStock <= _maxItemsInStock)
+        if (newStock <= Product.MaxItemsInStock)
             _quantity = newStock;
         else
         {
-            _quantity = _maxItemsInStock;
+            _quantity = Product.MaxItemsInStock;
             Console.WriteLine($"Product: {_productName} stock is full, some products couldn't be added.");
         }
     }
@@ -73,7 +73,7 @@ public class Product
         }
     }
 
-    public string AllDetails()
+    public string GetAllDetails()
     {
         return $"Product name: {_productName}, price: {_price}, quantity in stock: {_quantity}";
     }

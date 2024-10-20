@@ -1,11 +1,8 @@
 ﻿namespace LenaInventoryManagementSystem.Domain;
 
-enum MainMenu
+enum ProductUpdateMenu
 {
-    AddProduct,
-    GetAllProducts,
-    UpdateProduct,
-    DeleteProduct,
-    GetProduct,
-    Exit
+    UpdateProductName,
+    UpdateProductPrice,
+    UpdateProductQuantity
 }

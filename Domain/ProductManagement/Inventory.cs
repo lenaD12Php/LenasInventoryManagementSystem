@@ -1,4 +1,6 @@
-﻿namespace LenaInventoryManagementSystem;
+﻿using LenaInventoryManagementSystem.Domain;
+
+namespace LenaInventoryManagementSystem;
 
 public class Inventory
 {
@@ -51,7 +53,7 @@ public class Inventory
         return _products;
     }
 
-    internal static void UpdateProduct(string name, int choice)
+    internal static void UpdateProduct(string name, ProductUpdateMenu choice)
     {
         Product? existingProduct = _products.FirstOrDefault(p => p.ProductName == name);
 
@@ -59,15 +61,15 @@ public class Inventory
             throw new Exception("Product not found");
         switch (choice)
         {
-            case 1:
+            case ProductUpdateMenu.UpdateProductName:
                 var newName = InventoryUI.Message("Enter new name: ");
                 UpdateProductName(existingProduct, newName);
                 break;
-            case 2:
+            case ProductUpdateMenu.UpdateProductPrice:
                 var newPrice = double.Parse(InventoryUI.Message("Enter new price: "));
                 UpdateProductPrice(existingProduct, newPrice);
                 break;
-            case 3:
+            case ProductUpdateMenu.UpdateProductQuantity:
                 var newQuantity = int.Parse(InventoryUI.Message("Enter new quantity: "));
                 UpdateProductQuantity(existingProduct, newQuantity);
                 break;

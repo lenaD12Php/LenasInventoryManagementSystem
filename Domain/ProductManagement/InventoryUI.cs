@@ -1,4 +1,6 @@
-﻿namespace LenaInventoryManagementSystem;
+﻿using LenaInventoryManagementSystem.Domain;
+
+namespace LenaInventoryManagementSystem;
 
 public class InventoryUI 
 {
@@ -67,11 +69,12 @@ public class InventoryUI
     {
         var productName = Message("Enter the product name: ");
         DisplayProductUpdateMenu();
-        int choice = int.Parse(UserSelection());
+        var userInput = UserSelection();
+        var choice = Enum.Parse(typeof(ProductUpdateMenu), userInput, true);
 
         try
         {
-            Inventory.UpdateProduct(productName, choice);
+            Inventory.UpdateProduct(productName, (ProductUpdateMenu)choice);
             PrintMessage("Product updated successfully.");
         }
         catch (Exception ex)
